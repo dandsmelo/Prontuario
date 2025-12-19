@@ -1,6 +1,9 @@
 import 'dotenv/config';
 import fastify from "fastify";
 import fastifyCors from "@fastify/cors";
+import connection from './plugins/connection';
+import jwtPlugin from './plugins/jwt';
+
 export const app = fastify({ logger: true });
 
 async function start() {
@@ -10,6 +13,9 @@ async function start() {
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type']
   }));
+
+  await app.register(connection);
+  await app.register(jwtPlugin);
 
   try {
     await app.listen({ host: '0.0.0.0', port: 8080 });
