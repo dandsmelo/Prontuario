@@ -17,7 +17,6 @@ async function start() {
 
   await app.register(connection);
   await app.register(jwtPlugin);
-
   await app.register(routes);
 
   try {
