@@ -12,7 +12,7 @@ async function start() {
   await app.register(fastifyCors, ({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type']
+    allowedHeaders: ['Content-Type', 'Authorization']
   }));
 
   await app.register(connection);
@@ -20,8 +20,8 @@ async function start() {
   await app.register(routes);
 
   try {
-    await app.listen({ host: '0.0.0.0', port: 8080 });
-    console.log('Server is running at port 8080');
+    await app.listen({ host: '0.0.0.0', port: 3003 });
+    console.log('Server is running at port 3003');
   } catch (err) {
     console.log(err);
   }
