@@ -2,19 +2,19 @@ import { ObjectId } from "@fastify/mongodb";
 
 export interface IPatient {
   _id?: ObjectId;
-  caso: 'Índice' | 'Familiar';
-  nome: string;
-  dt_nascimento: string;
-  sexo: 'Feminino' | 'Masculino' | 'Outro';
-  telefone: string;
-  telefone_reserva?: string;
+  caseType: 'Índice' | 'Familiar';
+  name: string;
+  birthDate: string;
+  sex: 'Feminino' | 'Masculino' | 'Outro';
+  phone: string;
+  phoneReservation?: string;
   cpf: string;
   rg: string;
-  endereco: string;
-  numero: string;
-  complemento?: string;
-  bairro: string;
+  address: string;
+  number: string;
+  complement?: string;
+  neighborhood: string;
   cep: string;
-  diagnostico: string;
-  resumo: string;
+  diagnosis: string;
+  summary: string;
 }
