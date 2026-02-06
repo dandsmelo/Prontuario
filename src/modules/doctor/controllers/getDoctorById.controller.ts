@@ -20,7 +20,7 @@ export class GetDoctorByIdController {
 
         return reply.send({
             id: doctor._id?.toString(),
-            nome: doctor.nome,
+            name: doctor.name,
             user: doctor.user,
             email: doctor.email,
         });

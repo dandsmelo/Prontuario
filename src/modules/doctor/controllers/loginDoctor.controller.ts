@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 
 export class LoginDoctorController {
   async handle(request: FastifyRequest, reply: FastifyReply) {
-    const { user, senha } = request.body as { user: string, senha: string }
+    const { user, password } = request.body as { user: string, password: string }
     const db = request.server.mongo.db;
 
     if(!db) {
@@ -18,7 +18,7 @@ export class LoginDoctorController {
         return reply.status(400).send({ error: 'Usuário ou senha inválidos' });
     }
 
-    const isPasswordValid = await bcrypt.compare(senha, doctor.senha);
+    const isPasswordValid = await bcrypt.compare(password, doctor.password);
     if(!isPasswordValid) {
       return reply.status(400).send({ error: 'Usuário ou senha inválidos' });
     }
@@ -32,7 +32,7 @@ export class LoginDoctorController {
       token,
       doctor: {
         id: doctor._id,
-        nome: doctor.nome,
+        name: doctor.name,
         user: doctor.user,
         email: doctor.email,
       },
