@@ -4,11 +4,11 @@ import { DoctorRepository } from '../repositories/doctor.repository';
 
 export class RegisterDoctorController {
   async handle(request: FastifyRequest, reply: FastifyReply) {
-    const { nome, user, email, senha } = request.body as {
-      nome: string;
+    const { name, user, email, password } = request.body as {
+      name: string;
       user: string;
       email: string;
-      senha: string;
+      password: string;
     };
 
     const db = request.server.mongo.db;
@@ -23,13 +23,13 @@ export class RegisterDoctorController {
       return reply.status(400).send({ error: 'Usuário já existe' });
     }
 
-    const senhaHash = await bcrypt.hash(senha, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     await repository.create({
-      nome,
+      name,
       user,
       email,
-      senha: senhaHash,
+      password: hashedPassword,
     });
 
     return reply.status(201).send({ message: 'Médico cadastrado com sucesso' });
