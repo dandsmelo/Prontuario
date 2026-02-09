@@ -24,8 +24,8 @@ export class LoginDoctorController {
     }
 
     const token = request.server.jwt.sign(
-      { sub: doctor._id?.toString(), user: doctor.user },
-      { expiresIn: '1d' }
+      { user: doctor.user },
+      { sub: doctor._id?.toString(), expiresIn: '1d' }
     );
 
     return reply.send({

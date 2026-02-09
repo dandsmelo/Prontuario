@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { IPatient } from "../interfaces/patient.interface";
 import { PatientRepository } from "../repositories/patient.repository";
+import { ObjectId } from "@fastify/mongodb";
 
 export class CreatePatientController {
     async handle(request: FastifyRequest, reply: FastifyReply) {
@@ -28,6 +29,8 @@ export class CreatePatientController {
             return reply.status(500).send({ error: 'Banco indisponível' });
         }
 
+        const doctorId = request.user.sub;
+
         const repository = new PatientRepository(db);
 
         const exists = await repository.findByRg(rg);
@@ -37,6 +40,7 @@ export class CreatePatientController {
         }
 
         await repository.create({
+            doctorId: new ObjectId(doctorId),
             caseType,
             name,
             birthDate,

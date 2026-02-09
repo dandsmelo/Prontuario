@@ -8,6 +8,10 @@ export class PatientRepository {
     return this.db.collection<IPatient>('patients').find().toArray();
   }
 
+  async findByDoctorId(doctorId: string) {
+    return this.db.collection<IPatient>('patients').find({ doctorId: new ObjectId(doctorId) }).toArray();
+  }
+
   async findById(id: string) {
     return this.db.collection<IPatient>('patients').findOne({ _id: new ObjectId(id) });
   }

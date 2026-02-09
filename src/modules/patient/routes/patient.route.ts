@@ -5,10 +5,12 @@ import { GetPatientByIdController } from "../controllers/getPatientById.controll
 import { UpdatePatientController } from "../controllers/updatePatient.controller";
 import { DeletePatientController } from "../controllers/deletePatient.controller";
 import { authMiddleware } from "../../../middlewares/auth.middleware";
+import { ListPatientsByDoctorIdController } from "../controllers/listPatientsByDoctorId.controller";
 
 export async function patientRoutes(app: FastifyInstance) {
     const createPatient = new CreatePatientController();
     const listPatient = new ListPatientsController();
+    const listPatientsByDoctorId = new ListPatientsByDoctorIdController();
     const getByPatientId = new GetPatientByIdController();
     const updatePatient = new UpdatePatientController();
     const deletePatient = new DeletePatientController();
@@ -19,6 +21,9 @@ export async function patientRoutes(app: FastifyInstance) {
     app.get('/',
         { preHandler: [authMiddleware] },
         (req, res) => listPatient.handle(req, res));
+    app.get('/doctor',
+        { preHandler: [authMiddleware] },
+        (req, res) => listPatientsByDoctorId.handle(req, res));
     app.get('/:id',
         { preHandler: [authMiddleware] },
         (req, res) => getByPatientId.handle(req, res));

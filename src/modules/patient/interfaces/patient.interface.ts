@@ -2,6 +2,7 @@ import { ObjectId } from "@fastify/mongodb";
 
 export interface IPatient {
   _id?: ObjectId;
+  doctorId: ObjectId;
   caseType: 'Índice' | 'Familiar';
   name: string;
   birthDate: string;
