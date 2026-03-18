@@ -2,7 +2,7 @@ import { Db, ObjectId } from 'mongodb';
 import { IPatient } from '../interfaces/patient.interface';
 
 export class PatientRepository {
-  constructor(private db: Db) {}
+  constructor(private db: Db) { }
 
   async findAll() {
     return this.db.collection<IPatient>('patients').find().toArray();
@@ -18,6 +18,13 @@ export class PatientRepository {
 
   async findByRg(rg: string) {
     return this.db.collection<IPatient>('patients').findOne({ rg });
+  }
+
+  async findFamilyByIndexId(indexId: string, doctorId: string) {
+    return this.db.collection<IPatient>('patients').find({
+      indexPatientId: new ObjectId(indexId),
+      doctorId: new ObjectId(doctorId)
+    }).toArray();
   }
 
   async create(data: IPatient) {

@@ -3,7 +3,8 @@ import { ObjectId } from "@fastify/mongodb";
 export interface IPatient {
   _id?: ObjectId;
   doctorId: ObjectId;
-  caseType: 'Índice' | 'Familiar';
+  caseType: 'Index' | 'Family';
+  indexPatientId?: ObjectId;
   name: string;
   birthDate: string;
   sex: 'Feminino' | 'Masculino' | 'Outro';
