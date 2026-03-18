@@ -19,9 +19,11 @@ async function start() {
   await app.register(jwtPlugin);
   await app.register(routes);
 
+  const apiPort = Number(process.env.PORT);
+
   try {
-    await app.listen({ host: '0.0.0.0', port: 3003 });
-    console.log('Server is running at port 3003');
+    await app.listen({ host: '0.0.0.0', port: apiPort });
+    console.log(`Server is running at port ${apiPort}`);
   } catch (err) {
     console.log(err);
   }
