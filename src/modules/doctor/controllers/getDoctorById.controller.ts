@@ -3,7 +3,7 @@ import { DoctorRepository } from "../repositories/doctor.repository";
 
 export class GetDoctorByIdController {
     async handle(request: FastifyRequest, reply: FastifyReply) {
-        const { id } = request.body as { id: string };
+        const { id } = request.params as { id: string };
 
         const db = request.server.mongo.db;
 
@@ -21,7 +21,6 @@ export class GetDoctorByIdController {
         return reply.send({
             id: doctor._id?.toString(),
             name: doctor.name,
-            user: doctor.user,
             email: doctor.email,
         });
 

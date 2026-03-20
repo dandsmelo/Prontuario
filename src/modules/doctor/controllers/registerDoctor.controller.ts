@@ -4,9 +4,8 @@ import { DoctorRepository } from '../repositories/doctor.repository';
 
 export class RegisterDoctorController {
   async handle(request: FastifyRequest, reply: FastifyReply) {
-    const { name, user, email, password } = request.body as {
+    const { name, email, password } = request.body as {
       name: string;
-      user: string;
       email: string;
       password: string;
     };
@@ -18,17 +17,23 @@ export class RegisterDoctorController {
 
     const repository = new DoctorRepository(db);
 
-    const exists = await repository.findByUser(user);
+    const normalizedEmail = email.toLowerCase().trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(normalizedEmail)) {
+      return reply.status(400).send({ error: 'Email inválido' });
+    }
+
+    const exists = await repository.findByEmail(normalizedEmail);
     if (exists) {
-      return reply.status(400).send({ error: 'Usuário já existe' });
+      return reply.status(400).send({ error: 'Email já cadastrado' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await repository.create({
       name,
-      user,
-      email,
+      email: normalizedEmail,
       password: hashedPassword,
     });
 

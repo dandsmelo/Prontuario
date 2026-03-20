@@ -8,15 +8,15 @@ export class DoctorRepository {
     return this.db.collection<IDoctor>('doctors').find().toArray();
   }
 
-  async findByUser(user: string) {
-    return this.db.collection<IDoctor>('doctors').findOne({ user });
+  async findByEmail(email: string) {
+    return this.db.collection<IDoctor>('doctors').findOne({ email });
   }
 
   async findById(id: string) {
     return this.db.collection<IDoctor>('doctors').findOne({ _id: new ObjectId(id) });
   }
 
-  async create(data: any) {
+  async create(data: IDoctor) {
     return this.db.collection<IDoctor>('doctors').insertOne(data);
   }
 }

@@ -4,36 +4,36 @@ import bcrypt from 'bcryptjs';
 
 export class LoginDoctorController {
   async handle(request: FastifyRequest, reply: FastifyReply) {
-    const { user, password } = request.body as { user: string, password: string }
+    const { email, password } = request.body as { email: string, password: string }
     const db = request.server.mongo.db;
 
-    if(!db) {
+    if (!db) {
       return reply.status(500).send({ error: 'Banco indisponível' });
     }
 
     const repository = new DoctorRepository(db);
 
-    const doctor = await repository.findByUser(user);
-    if(!doctor) {
-        return reply.status(400).send({ error: 'Usuário ou senha inválidos' });
+    const normalizedEmail = email.toLowerCase().trim();
+    const doctor = await repository.findByEmail(normalizedEmail);
+    if (!doctor) {
+      return reply.status(400).send({ error: 'Email ou senha inválidos' });
     }
 
     const isPasswordValid = await bcrypt.compare(password, doctor.password);
-    if(!isPasswordValid) {
-      return reply.status(400).send({ error: 'Usuário ou senha inválidos' });
+    if (!isPasswordValid) {
+      return reply.status(400).send({ error: 'Email ou senha inválidos' });
     }
 
     const token = request.server.jwt.sign(
-      { user: doctor.user },
+      { email: doctor.email },
       { sub: doctor._id?.toString(), expiresIn: '1d' }
     );
 
     return reply.send({
       token,
       doctor: {
-        id: doctor._id,
+        id: doctor._id.toString(),
         name: doctor.name,
-        user: doctor.user,
         email: doctor.email,
       },
     });
