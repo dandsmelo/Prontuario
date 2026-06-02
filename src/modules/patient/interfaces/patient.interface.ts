@@ -8,6 +8,7 @@ export interface IPatient {
   name: string;
   birthDate: string;
   sex: 'Feminino' | 'Masculino' | 'Outro';
+  email: string;
   phone: string;
   phoneReservation?: string;
   cpf: string;
