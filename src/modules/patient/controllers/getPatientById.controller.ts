@@ -20,7 +20,6 @@ export class GetPatientByIdController {
 
         return reply.send({
             ...patient,
-            id: patient._id.toString(),
         });
 
     }

@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { PatientRepository } from "../repositories/patient.repository";
 import { IPatient } from "../interfaces/patient.interface";
+import { ObjectId } from "@fastify/mongodb";
 
 export class UpdatePatientController {
     async handle(request: FastifyRequest, reply: FastifyReply) {
@@ -15,14 +16,17 @@ export class UpdatePatientController {
 
         const repository = new PatientRepository(db);
 
+        if (updateData.indexPatientId) {
+            updateData.indexPatientId = new ObjectId(updateData.indexPatientId);
+        }
+
         const updatedPatient = await repository.updateById(id, updateData);
 
-        if(!updatedPatient) {
+        if (!updatedPatient) {
             return reply.status(400).send({ error: 'Falha na atualização' });
         }
 
         return reply.send({ message: "Paciente editado" });
-        
 
     }
 }

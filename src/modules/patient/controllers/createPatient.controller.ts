@@ -7,6 +7,7 @@ export class CreatePatientController {
     async handle(request: FastifyRequest, reply: FastifyReply) {
         const {
             caseType,
+            indexPatientId,
             name,
             birthDate,
             sex,
@@ -43,6 +44,7 @@ export class CreatePatientController {
         await repository.create({
             doctorId: new ObjectId(doctorId),
             caseType,
+            indexPatientId: new ObjectId(indexPatientId),
             name,
             birthDate,
             sex,
