@@ -11,7 +11,7 @@ export async function attendanceRoutes(app: FastifyInstance) {
     const listAttendancesByPatientId = new ListAttendanceByPatientIdController();
     const listAttendances = new ListAttendancesController();
 
-    app.post('/',
+    app.post('/create',
         { preHandler: [authMiddleware] },
         (req, res) => createAttendance.handle(req, res),
     );
