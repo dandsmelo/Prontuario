@@ -20,7 +20,7 @@ export class ListAttendanceByPatientIdController {
         );
 
         if (attendances.length === 0) {
-            return reply.status(404).send({ error: 'Nenhum atendimento encontrado.' });
+            return reply.status(204).send({ error: 'Nenhum atendimento encontrado.' });
         }
 
         return reply.send(attendances);

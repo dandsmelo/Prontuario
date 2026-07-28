@@ -20,7 +20,7 @@ export class GetFamilyByIndexIdController {
         )
 
         if (patients.length === 0) {
-            return reply.status(404).send({ error: 'Nenhum familiar encontrado' });
+            return reply.status(204).send({ error: 'Nenhum familiar encontrado' });
         }
 
         return reply.send(patients)
