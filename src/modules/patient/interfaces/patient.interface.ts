@@ -21,3 +21,5 @@ export interface IPatient {
   diagnosis: string;
   summary: string;
 }
+
+export type SearchParams = 'name' | 'rg' | 'diagnosis' | 'cpf'

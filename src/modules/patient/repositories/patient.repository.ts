@@ -1,5 +1,5 @@
 import { Db, ObjectId } from 'mongodb';
-import { IPatient } from '../interfaces/patient.interface';
+import { IPatient, SearchParams } from '../interfaces/patient.interface';
 
 export class PatientRepository {
   constructor(private db: Db) { }
@@ -14,10 +14,6 @@ export class PatientRepository {
 
   async findById(id: string) {
     return this.db.collection<IPatient>('patients').findOne({ _id: new ObjectId(id) });
-  }
-
-  async findByRg(rg: string) {
-    return this.db.collection<IPatient>('patients').findOne({ rg });
   }
 
   async findFamilyByIndexId(indexId: string, doctorId: string) {
@@ -38,5 +34,16 @@ export class PatientRepository {
 
   async deleteById(id: string) {
     return this.db.collection<IPatient>('patients').deleteOne({ _id: new ObjectId(id) });
+  }
+
+  async searchByDoctorId(doctorId: string, field: SearchParams, value: string,
+  ) {
+    return this.db.collection<IPatient>('patients').find({
+      doctorId: new ObjectId(doctorId),
+      [field]: {
+        $regex: value,
+        $options: 'i',
+      },
+    }).toArray();
   }
 }
