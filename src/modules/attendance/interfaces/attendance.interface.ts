@@ -11,3 +11,5 @@ export interface IAttendance {
     prescription: string;
     observations?: string;
 }
+
+export type AttendanceSort = 'date' | 'patientName';
