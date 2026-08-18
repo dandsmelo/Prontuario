@@ -1,5 +1,5 @@
 import { Db, ObjectId } from "mongodb";
-import { IAttendance } from "../interfaces/attendance.interface";
+import { AttendanceSort, IAttendance } from "../interfaces/attendance.interface";
 
 export class AttendanceRepository {
     constructor(private db: Db) { }
@@ -8,11 +8,39 @@ export class AttendanceRepository {
         return this.db.collection<IAttendance>("attendances").insertOne(data);
     }
 
-    async listAll(doctorId: string) {
+    async listAll(
+        doctorId: string,
+        sortBy: AttendanceSort = 'date',
+        order: 1 | -1 = -1,
+    ) {
+        const sortField = sortBy === 'patientName'
+            ? 'patient.name'
+            : 'date';
+
         return this.db.collection<IAttendance>('attendances')
-            .find({
-                doctorId: new ObjectId(doctorId)
-            }).toArray();
+            .aggregate([
+                {
+                    $match: {
+                        doctorId: new ObjectId(doctorId),
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'patients',
+                        localField: 'patientId',
+                        foreignField: '_id',
+                        as: 'patient',
+                    },
+                },
+                {
+                    $unwind: '$patient',
+                },
+                {
+                    $sort: {
+                        [sortField]: order,
+                    },
+                },
+            ]).toArray();
     }
 
     async listByPatientId(patientId: string, doctorId: string) {
