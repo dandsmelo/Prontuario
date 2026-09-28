@@ -4,7 +4,7 @@ export interface IAttendance {
     _id?: ObjectId;
     patientId: ObjectId;
     doctorId: ObjectId;
-    date: Date;
+    date: string;
     anamnesis: string;
     diagnosis: string;
     conduct: string;
